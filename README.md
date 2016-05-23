@@ -8,15 +8,27 @@ We recommend an virtualenv installation of TensorFlow. Detail tutorial can be fo
 
 After successfully installed tensorflow, activate virtualenv by:
 
+```
 $ source ~/tensorflow/bin/activate  # If using bash
+```
 
-Or $ source ~/tensorflow/bin/activate.csh  # If using csh
+Or
+
+```
+$ source ~/tensorflow/bin/activate.csh  # If using csh
+```
 
 After that, using build script:
 
+```
 $ ./build_tensorflow.sh  # If linking against Intel MKL
+```
 
-Or $ ./build_tensorflow-cblas.sh  # If linking against CBLAS/ATLAS
+Or
+
+```
+$ ./build_tensorflow-cblas.sh  # If linking against CBLAS/ATLAS
+```
 
 ## Getting Started with Caffe
 
@@ -26,7 +38,9 @@ First, follow the [instructions](http://caffe.berkeleyvision.org/installation.ht
 
 Next, using build script, run:
 
+```
 $ ./build_caffe.sh
+```
 
 Once this is done, turn on Tamp by setting USE_TAMP in Caffe's Makefile.config to include the Tamp library and rebuild Caffe.
 
