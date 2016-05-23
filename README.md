@@ -34,4 +34,7 @@ To generate static linked library for models using Tamp.
 
 Once this is done, turn on Tamp by setting USE_TAMP in Caffe's Makefile.config to include Tamp library and rebuild Caffe.
 
+## More help
+
+Online documants can be found at [here](https://github.com/wenri/tamp). [Docs](https://github.com/wenri/tamp/docs) are avaliable.
 
