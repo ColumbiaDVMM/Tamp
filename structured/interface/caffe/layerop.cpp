@@ -17,7 +17,7 @@ void LayerOpFunctor<CPUDevice>::operator()(
 		  ProcessorTape* atape
 		  ) {
   cerr<<"Functor called!\n";
-  core->load(atape);
+  //core->load(atape);
 
  
   core->execute(atape);

@@ -13,7 +13,7 @@ struct ExecutiveCore;
 
 template <typename T> struct TypedData;
 
-struct BufferedData {
+struct BufferedData: std::enable_shared_from_this<BufferedData> {
   virtual ~BufferedData() = default;
   template<typename T> inline TypedData<T>& typed() {
     return dynamic_cast<TypedData<T>&>(*this);
@@ -27,6 +27,8 @@ struct BufferedData {
   virtual int64 dim_size(int index) const = 0;
   virtual void reshape(const std::vector<int64> shape) = 0;
   virtual std::shared_ptr<BufferedData>fromBuffer(void* buf) const = 0;
+  inline std::shared_ptr<BufferedData> ptr() { return shared_from_this(); }
+  
 };
 
 template <typename T>

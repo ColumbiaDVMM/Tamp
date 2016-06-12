@@ -10,7 +10,7 @@ using namespace caffe;
 template <typename Dtype>
 struct Processor: ProcessorBase {
 
-int K_ = 4096, N_ = 1024, M_ = 1;
+int K_ = 1024, N_ = 10, M_ = 100;
 Dtype *D_ = nullptr;
   
 Processor(Environment * env) : ProcessorBase(env) {
