@@ -39,12 +39,12 @@ struct LaunchLayerOp {
       
       for (int i=0; i<ctx->num_inputs(); i++)
 	atape.input.push_back(
-	   shared_ptr<const BufferedData >(new TypedDataTensor<T>( ctx->input(i) ))
+	     shared_ptr<const BufferedData >(new TypedDataTensor<T>( ctx->input(i) ))
 			      );
 
       for (int i=0; i<ctx->num_outputs(); i++)
 	atape.output.push_back(
-	    shared_ptr<BufferedData>(new TypedDataTensorShape<T>)
+	     shared_ptr<BufferedData>(new TypedDataTensorShape<T>)
 			       );
       
       functor::LayerOpFunctor<Device>()(ctx->eigen_device<Device>(),

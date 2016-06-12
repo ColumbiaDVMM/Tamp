@@ -2,6 +2,7 @@
 #define _STRUCTURED_PROCESSOR_TAPE_
 
 #include <memory>
+#include "structured/lib/TypedData.h"
 
 namespace structured {
   

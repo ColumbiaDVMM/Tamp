@@ -9,14 +9,22 @@ namespace structured {
 template <typename T>
 struct TypedDataCaffe : TypedData<T> {
   TypedDataCaffe() = default;
-  inline TypedDataCaffe(const Blob<T> &blob) {
+  inline TypedDataCaffe(const caffe::Blob<T> &blob): _blob(blob.shape()) {
     _blob.ShareData(blob);
   }
-  inline TypedDataCaffe(Blob<T> &&caffe) {
+  inline TypedDataCaffe(caffe::Blob<T> &&blob): _blob(blob.shape()) {
     _blob.ShareData(blob);
   }
-  inline TypedDataCaffe(const TypedDataCaffe<T> &typeddata) { }
-  inline TypedDataCaffe(TypedDataCaffe<T> &&typeddata) { }
+  inline TypedDataCaffe(const TypedDataCaffe<T> &typeddata):
+    _blob(typeddata._blob.shape())
+  {
+    _blob.ShareData(typeddata._blob);
+  }
+  inline TypedDataCaffe(TypedDataCaffe<T> &&typeddata):
+    _blob(typeddata._blob.shape())
+  {
+    _blob.ShareDate(std::move(typeddata._blob));
+  }
   virtual const T * data() const {
     return _blob.cpu_data();
   }
@@ -26,13 +34,17 @@ struct TypedDataCaffe : TypedData<T> {
   virtual int64 count() const {
     return this->_blob.count();
   }
-  virtual int dims() const { return _caffe.num_axes();  }
-  virtual int64 dim_size(int index) const { return _caffe.shape(index); }
-  inline Blob<T>& getBlob() { return _blob; }
-  virtual void reshape(const std::vector<int64> shape) { }
-  virtual std::shared_ptr<BufferedData>fromBuffer(void* buf) const { }
+  virtual int dims() const { return _blob.num_axes();  }
+  virtual int64 dim_size(int index) const { return _blob.shape(index); }
+  inline caffe::Blob<T>& getBlob() { return _blob; }
+  virtual void reshape(const std::vector<int64> shape) {
+    std::vector<int> caffeShape;
+    for( int64 dim : shape ) caffeShape.push_back(dim);
+    _blob.Reshape(caffeShape);
+  }
+  virtual std::shared_ptr<BufferedData>fromBuffer(void* buf) const { return nullptr; }
 protected:
-  Blob<T> _blob;  
+  caffe::Blob<T> _blob;
 };
 
 

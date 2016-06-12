@@ -7,17 +7,20 @@
 
 namespace structured{
 
+  struct CPUDevice{};
+  struct GPUDevice{};
+  
 namespace functor{
 
 template <typename Device>
 struct LayerOpFunctor {
   void operator()(
 		  const Device& d,
-		  ExecutiveCoreTensor* core,
+		  ExecutiveCoreCaffe* core,
 		  ProcessorTape* atape);
   void operator()(
 		  const Device& d,
-		  ExecutiveCoreTensor* core,
+		  ExecutiveCoreCaffe* core,
 		  ProcessorTape* atape,
 		  ProcessorTape* btape);
 };
