@@ -1,4 +1,3 @@
-//This is an empty file.
 
 #include "structured/interface/caffe/layerop.hpp"
 #include <iostream>
@@ -13,7 +12,7 @@ namespace functor {
 template <>
 void LayerOpFunctor<CPUDevice>::operator()(
 		  const CPUDevice& d,
-		  ExecutiveCoreCaffe* core,
+		  ExecutiveCore* core,
 		  ProcessorTape* atape
 		  ) {
   cerr<<"Functor called!\n";
@@ -26,7 +25,7 @@ void LayerOpFunctor<CPUDevice>::operator()(
 template <>
 void LayerOpFunctor<CPUDevice>::operator()(
 		  const CPUDevice& d,
-		  ExecutiveCoreCaffe* core,
+		  ExecutiveCore* core,
 		  ProcessorTape* atape,
 		  ProcessorTape* btape
 		  ) {

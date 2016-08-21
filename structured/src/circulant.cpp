@@ -2,6 +2,7 @@
 #include "structured/lib/caffe/util/math_functions.hpp"
 #include <iostream>
 #include <complex>
+#include <typeinfo>
 
 using namespace structured;
 using namespace std;
@@ -161,9 +162,12 @@ void Forward(
       <<","<<input.data()[1]<<",...,"<<input.data()[K_]<<endl;
   cerr<<"buffer allocated, insight param: "<<param.data()[0]
       <<","<<param.data()[1]<<",...,"<<param.data()[K_]<<">>";
-  
-  ComputeOnCPU(input.data(), output.data(), param.data(),
+
+  if ( CpuCore * core = dynamic_cast<CpuCore *>(core) )
+      ComputeOnCPU(input.data(), output.data(), param.data(),
 	       conv_buffer->data(), param_buffer->data(), data_buffer->data());
+  else if ( GpuCore * core = dynamic_cast<GpuCore *>(core) )
+      cerr<<"Gpu detected!"<<endl;
 }
 
 void Backward(
@@ -179,22 +183,6 @@ void Backward(
 
   vector<int64> input_buffer_shape(1, N_*K_);
   auto weight_buffer = core->allocateBuffer<Dtype>(input_buffer_shape);
-
-
-  cerr<<"buffer allocated, insight input: "<<input.data()[0]
-      <<","<<input.data()[1]<<",...,"<<input.data()[K_]<<endl;
-  cerr<<"grad buf llocated, insight diff: "<<top_diff.data()[0]
-      <<","<<top_diff.data()[1]<<",...,"<<top_diff.data()[N_]<<endl;
-  
-  GradOfInputOnCPU(top_diff.data(), param.data(), grad_of_input.data(), 
-		   weight_buffer->data());
-
-  GradOfParamOnCPU(top_diff.data(), input.data(), grad_of_param.data(),
-  		   weight_buffer->data());
-  
-  cerr<<"matrix version veri, insight grad: "<<grad_of_param.data()[0]
-      <<","<<grad_of_param.data()[1]<<",...,"<<grad_of_param.data()[N_]<<endl;
-
   vector<int64> buffer_shape(1, M_*K_);
   
   auto conv_buffer = core->allocateBuffer<complex<Dtype> >(buffer_shape);
@@ -205,11 +193,31 @@ void Backward(
   auto bias_multiplier = core->allocateBuffer<Dtype>(buffer_shape);
   caffe_set(M_, Dtype(1.), bias_multiplier->data());
 
+  if ( CpuCore * core = dynamic_cast<CpuCore *>(core) ) {
+ 
+  cerr<<"buffer allocated, insight input: "<<input.data()[0]
+      <<","<<input.data()[1]<<",...,"<<input.data()[K_]<<endl;
+  cerr<<"grad buf llocated, insight diff: "<<top_diff.data()[0]
+      <<","<<top_diff.data()[1]<<",...,"<<top_diff.data()[N_]<<endl;
+  
+  GradOfInputOnCPU(top_diff.data(), param.data(), grad_of_input.data(), 
+		   weight_buffer->data());
+
+  /*
+  GradOfParamOnCPU(top_diff.data(), input.data(), grad_of_param.data(),
+  		   weight_buffer->data());
+  
+  cerr<<"matrix version veri, insight grad: "<<grad_of_param.data()[0]
+      <<","<<grad_of_param.data()[1]<<",...,"<<grad_of_param.data()[N_]<<endl;
+  */
+  
+
   // cerr<<"Grad Param num="<<grad_of_param.count()<<endl;
-  GradOfParamOnCPUFFT(top_diff.data(), input.data(), weight_buffer->data(),
+  GradOfParamOnCPUFFT(top_diff.data(), input.data(), grad_of_param.data(),
   		   conv_buffer->data(), diff_buffer->data(),
   		   data_buffer->data(),
   		   bias_multiplier->data());
+  /*
   cerr<<"grad buf llocated, insight grad: "<<weight_buffer->data()[0]
       <<","<<weight_buffer->data()[1]<<",...,"<<weight_buffer->data()[N_]<<endl;
 
@@ -219,6 +227,11 @@ void Backward(
   
   //  caffe_set(grad_of_input.count(), (Dtype)0., grad_of_input.data());
   //  caffe_set(grad_of_param.count(), (Dtype)0., grad_of_param.data());
+  */
+  }
+  else if ( GpuCore * core = dynamic_cast<GpuCore *>(core) )
+      cerr<<"Gpu detected!"<<endl;
+
 }
 
 };

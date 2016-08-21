@@ -5,9 +5,12 @@
 
 namespace structured {
   
-struct ExecutiveCoreCaffe: ExecutiveCore{
-  friend struct ExecutiveCore;
-  ExecutiveCoreCaffe(ProcessorBase * processor): ExecutiveCore(processor) { }
+struct CpuCoreCaffe: CpuCore{
+  CpuCoreCaffe(ProcessorBase * processor): CpuCore(processor) { }
+};
+
+struct GpuCoreCaffe: GpuCore{
+  GpuCoreCaffe(ProcessorBase * processor): GpuCore(processor) { }
 };
 
 }

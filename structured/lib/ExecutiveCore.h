@@ -28,6 +28,14 @@ protected:
   ProcessorBase * _processor;
 };
 
+struct CpuCore: ExecutiveCore{
+  CpuCore(ProcessorBase * processor): ExecutiveCore(processor) {}
+};
+
+struct GpuCore: ExecutiveCore{
+  GpuCore(ProcessorBase * processor): ExecutiveCore(processor) {}
+};
+
 }
 
 #endif

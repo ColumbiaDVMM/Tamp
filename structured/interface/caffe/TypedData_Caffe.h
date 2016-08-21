@@ -40,6 +40,31 @@ struct TypedDataCaffe : TypedData<T>, caffe::Blob<T> {
   virtual std::shared_ptr<BufferedData>fromBuffer(void* buf) const { return nullptr; }
 };
 
+template <typename T>
+struct TypedDataCaffeCpu : TypedDataCaffe<T> {
+  TypedDataCaffeCpu() = default;
+  inline TypedDataCaffeCpu(const caffe::Blob<T> &blob): TypedDataCaffe<T>(blob) {  }
+  inline TypedDataCaffeCpu(caffe::Blob<T> &&blob): TypedDataCaffe<T>(blob) {  }
+  virtual const T * data() const {
+    return this->cpu_data();
+  }
+  virtual T * data() {
+    return this->mutable_cpu_data();
+  }
+};
+
+template <typename T>
+struct TypedDataCaffeGpu : TypedDataCaffe<T> {
+  TypedDataCaffeGpu() = default;
+  inline TypedDataCaffeGpu(const caffe::Blob<T> &blob): TypedDataCaffe<T>(blob) {  }
+  inline TypedDataCaffeGpu(caffe::Blob<T> &&blob): TypedDataCaffe<T>(blob) {  }
+  virtual const T * data() const {
+    return this->gpu_data();
+  }
+  virtual T * data() {
+    return this->mutable_gpu_data();
+  }
+};
 
 }
 
