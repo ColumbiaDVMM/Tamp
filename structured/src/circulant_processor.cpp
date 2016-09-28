@@ -101,6 +101,7 @@ void Backward(
   
   auto conv_buffer = core->allocateBuffer<complex<Dtype> >(buffer_shape);
   auto diff_buffer = core->allocateBuffer<complex<Dtype> >(buffer_shape);
+  auto param_buffer = core->allocateBuffer<complex<Dtype> >(buffer_shape);
   auto data_buffer = core->allocateBuffer<Dtype>(buffer_shape);
 
   vector<int64> bias_shape(1, M_);
@@ -120,8 +121,20 @@ void Backward(
 				0, (K_ - N_) * sizeof(Dtype), M_));
     
       caffe_gpu_fft<Dtype>(M_, K_, data_buffer->data(), diff_buffer->data());
+      CirculantProjection<GpuCore, Dtype>::GradientOfInput(
+	       D_, M_, K_, N_,
+	       top_diff->data(), param->data(), grad_of_input->data(),
+	       conv_buffer->data(), diff_buffer->data(),
+	       param_buffer->data(), data_buffer->data(),
+	       weight_buffer->data());;
 
-      
+      CirculantProjection<GpuCore, Dtype>::GradientOfParameter(
+	       D_, M_, K_, N_,      
+	       top_diff->data(), input->data(), grad_of_param->data(),
+	       conv_buffer->data(), diff_buffer->data(),
+	       data_buffer->data(),
+	       bias_multiplier->data());
+  
       return true;
     }) ||
   core->only( [=](CpuCore* core){
