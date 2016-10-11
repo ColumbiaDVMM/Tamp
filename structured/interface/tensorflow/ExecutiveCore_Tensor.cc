@@ -10,7 +10,7 @@ namespace structured {
 
 template <> shared_ptr<TypedData<float> >
 ExecutiveCore::allocateBuffer(const vector<int64>& shape) {
-  auto & tensorCore = dynamic_cast<ExecutiveCoreTensor&>(*this);
+  auto & tensorCore = dynamic_cast<TensorCore&>(*this);
   TensorShape tensorShape;
   for( int64 dim : shape ) tensorShape.AddDim(dim);
   auto * buffer = new TypedDataTensor<float>;
@@ -20,7 +20,7 @@ ExecutiveCore::allocateBuffer(const vector<int64>& shape) {
 
 template <> shared_ptr<TypedData<double> >
 ExecutiveCore::allocateBuffer(const vector<int64>& shape) {
-  auto & tensorCore = dynamic_cast<ExecutiveCoreTensor&>(*this);
+  auto & tensorCore = dynamic_cast<TensorCore&>(*this);
   TensorShape tensorShape;
   for( int64 dim : shape ) tensorShape.AddDim(dim);
   auto * buffer = new TypedDataTensor<double>;
@@ -30,7 +30,7 @@ ExecutiveCore::allocateBuffer(const vector<int64>& shape) {
 
 template <> shared_ptr<TypedData<std::complex<float> > >
 ExecutiveCore::allocateBuffer(const vector<int64>& shape) {
-  auto & tensorCore = dynamic_cast<ExecutiveCoreTensor&>(*this);
+  auto & tensorCore = dynamic_cast<TensorCore&>(*this);
   TensorShape tensorShape;
   for( int64 dim : shape ) tensorShape.AddDim(dim);
   auto * buffer = new TypedDataTensor<std::complex<float> >;
@@ -40,7 +40,7 @@ ExecutiveCore::allocateBuffer(const vector<int64>& shape) {
 
 template <> shared_ptr<TypedData<std::complex<double> > >
 ExecutiveCore::allocateBuffer(const vector<int64>& shape) {
-  auto & tensorCore = dynamic_cast<ExecutiveCoreTensor&>(*this);
+  auto & tensorCore = dynamic_cast<TensorCore&>(*this);
   TensorShape tensorShape;
   for( int64 dim : shape ) tensorShape.AddDim(dim);
   auto * buffer = new TypedDataTensor<std::complex<double> >;

@@ -5,16 +5,23 @@
 #include "tensorflow/core/framework/op_kernel.h"
 
 namespace structured {
-  
-struct ExecutiveCoreTensor: ExecutiveCore{
+
+struct TensorCore{
   friend struct ExecutiveCore;
-  ExecutiveCoreTensor(ProcessorBase * processor,
-       tensorflow::OpKernelContext* ctx, tensorflow::OpKernel* knl):
-    ExecutiveCore(processor), context(ctx), kernel(knl) {}
+  TensorCore(tensorflow::OpKernelContext* ctx, tensorflow::OpKernel* knl):
+    context(ctx), kernel(knl) {}
   inline tensorflow::OpKernelContext* getContext() { return context; }
 protected:
   tensorflow::OpKernelContext* context;
   tensorflow::OpKernel* kernel;
+};
+
+struct CpuCoreTensor: CpuCore, TensorCore{
+  CpuCoreTensor(ProcessorBase * processor, tensorflow::OpKernelContext* ctx, tensorflow::OpKernel* knl): CpuCore(processor), TensorCore(ctx, knl) { }
+};
+
+struct GpuCoreTensor: GpuCore, TensorCore{
+  GpuCoreTensor(ProcessorBase * processor, tensorflow::OpKernelContext* ctx, tensorflow::OpKernel* knl): GpuCore(processor), TensorCore(ctx, knl) { }
 };
 
 }

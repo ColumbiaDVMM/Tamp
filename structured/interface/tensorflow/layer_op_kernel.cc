@@ -34,7 +34,7 @@ struct LaunchLayerOp {
     static void launch(
       OpKernelContext* ctx, OpKernel* kernel, ProcessorBase* processor) {
 
-      ExecutiveCoreTensor core(processor, ctx, kernel);
+      CpuCoreTensor core(processor, ctx, kernel);
       ProcessorTape atape;
       
       for (int i=0; i<ctx->num_inputs(); i++)
@@ -53,7 +53,7 @@ struct LaunchLayerOp {
     static void launchgrad(
       OpKernelContext* ctx, OpKernel* kernel, ProcessorBase* processor) {
 
-      ExecutiveCoreTensor core(processor, ctx, kernel);
+      CpuCoreTensor core(processor, ctx, kernel);
       ProcessorTape atape;
       ProcessorTape btape;
       

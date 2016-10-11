@@ -18,11 +18,11 @@ template <typename Device>
 struct LayerOpFunctor {
   void operator()(
 		  const Device& d,
-		  ExecutiveCoreTensor* core,
+		  CpuCoreTensor* core,
 		  ProcessorTape* atape);
   void operator()(
 		  const Device& d,
-		  ExecutiveCoreTensor* core,
+		  CpuCoreTensor* core,
 		  ProcessorTape* atape,
 		  ProcessorTape* btape);
 };

@@ -1,5 +1,5 @@
 #include "structured/lib/CreateProcessor.h"
-#include "caffe/util/math_functions.hpp"
+#include "structured/lib/caffe/util/math_functions.hpp"
 #include "circulant.hpp"
 #include <iostream>
 #include <complex>

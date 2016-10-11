@@ -16,7 +16,7 @@ namespace functor {
 template <>
 void LayerOpFunctor<CPUDevice>::operator()(
 		  const CPUDevice& d,
-		  ExecutiveCoreTensor* core,
+		  CpuCoreTensor* core,
 		  ProcessorTape* atape
 		  ) {
 
@@ -38,7 +38,7 @@ void LayerOpFunctor<CPUDevice>::operator()(
 template <>
 void LayerOpFunctor<CPUDevice>::operator()(
 		  const CPUDevice& d,
-		  ExecutiveCoreTensor* core,
+		  CpuCoreTensor* core,
 		  ProcessorTape* atape,
 		  ProcessorTape* btape
 		  ) {
