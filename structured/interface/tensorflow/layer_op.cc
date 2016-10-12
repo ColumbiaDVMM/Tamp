@@ -12,7 +12,7 @@ namespace structured {
 std::unordered_map<std::string, ProcessorBase*> ProcessorMap;
 
 namespace functor {
-// Partial specialization MatMulFunctor<Device=CPUDevice, T>.
+// Partial specialization Functor<Device=CPUDevice, T>.
 template <>
 void LayerOpFunctor<CPUDevice>::operator()(
 		  const CPUDevice& d,

@@ -97,18 +97,27 @@ protected:
 public:
   explicit LayerOp(OpKernelConstruction* context) : OpKernel(context) {
     ProcessorRepresentative<T> representative;
-    Environment env;
-
+ 
     LOG(INFO)<<"OpKernelInterfaceInitializaing: "<<this->name()
 	     <<", type: "<<this->type_string();
 
-    env.num_inputs = this->num_inputs();
-    env.num_outputs = this->num_outputs();
+    auto got = ProcessorMap.find(this->name());
+
+    if ( got == ProcessorMap.end() ) {
+      Environment env;
+
+      env.num_inputs = this->num_inputs();
+      env.num_outputs = this->num_outputs();
     
-    this->processor = representative(&env);
-    ProcessorMap.insert({this->name(), this->processor});
-      
-    LOG(INFO)<<"OpKernelProcessorCreated: "<<this->processor;
+      this->processor = representative(&env);
+      ProcessorMap.insert({this->name(), this->processor});
+    
+      LOG(INFO)<<"OpKernelProcessorCreated: "<<this->processor;
+    } else {
+      this->processor = got->second;
+    
+      LOG(INFO)<<"OpKernelProcessorGot: "<<this->processor;   
+    }
   }
 
   void Compute(OpKernelContext* context) override {
@@ -130,9 +139,9 @@ public:
     OP_REQUIRES_OK(context,
                    context->GetAttr("op_name", &ProcessorName));
     
-    this->processor = ProcessorMap[ProcessorName];
+    this->processor = ProcessorMap.at(ProcessorName);
 
-    LOG(INFO)<<"OpKernelGradientProcessorCreated: "<<this->processor;
+    LOG(INFO)<<"OpKernelGradientProcessorGot: "<<this->processor;
   }
 
   void Compute(OpKernelContext* context) override {

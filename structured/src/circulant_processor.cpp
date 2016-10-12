@@ -19,9 +19,11 @@ Dtype *D_ = nullptr;
 
 Processor(Environment * env) : ProcessorBase(env) {
   cudaMallocManaged(&D_, sizeof(Dtype) * K_);
+  // D_ = static_cast<Dtype*>( malloc(sizeof(Dtype) * K_) );
   srand(K_*N_);
   for(int i=0;i<K_;i++)
     D_[i]= (rand()%2) ? (Dtype)1. : (Dtype)-1. ;
+  cerr<<"Initialized"<<endl;
 }
 
 ~Processor() {
@@ -40,7 +42,8 @@ void Shape(
   K_ = input.dim_size(1);
   N_ = 384;
   output.reshape({M_, N_});
-  
+
+  cerr<<"Shaped"<<endl;
 }
 
 void Forward(
@@ -58,6 +61,8 @@ void Forward(
   auto data_buffer = core->allocateBuffer<Dtype>(buffer_shape);
 
   core->only( [=](GpuCore* core){
+      cerr<<"Gpu detected!"<<endl;
+      
       CirculantProjection<GpuCore, Dtype>::Compute(
 	       D_, M_, K_, N_,
 	       input->data(), output->data(), param->data(),

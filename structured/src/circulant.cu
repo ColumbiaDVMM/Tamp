@@ -1,6 +1,6 @@
 #include "circulant.hpp"
 #include "structured/lib/ExecutiveCore.h"
-#include "caffe/util/math_functions.hpp"
+#include "structured/lib/caffe/util/math_functions.hpp"
 #include <vector>
 #include <thrust/complex.h>
 

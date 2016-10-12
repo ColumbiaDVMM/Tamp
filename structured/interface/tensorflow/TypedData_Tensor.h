@@ -35,7 +35,6 @@ protected:
   tensorflow::Tensor _tensor;  
 };
 
-  
 template <typename T>
 struct TypedDataTensorShape : TypedData<T>, tensorflow::TensorShape {
   TypedDataTensorShape() = default;
